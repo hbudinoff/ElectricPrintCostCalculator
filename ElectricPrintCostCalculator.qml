@@ -15,7 +15,7 @@ UM.Dialog
     modality: Qt.NonModal
     id: base;
     width: 480 * Screen.devicePixelRatio;
-    height: 260 * Screen.devicePixelRatio;
+    height: 320 * Screen.devicePixelRatio;
     visible: true;
     title:  qsTr("Calculate electrical print cost")
     property real material_amount_length: manager.materialAmountLength == -1 ? 0 : manager.materialAmountLength
@@ -33,6 +33,7 @@ UM.Dialog
     property real printing_time_h: manager.printing_time_h
     property real printing_time_m: manager.printing_time_m
     property real printing_time_in_hours: (printing_time_h + (printing_time_m/60))
+    property real material_cost: 0.2
    
     Column
     {
@@ -107,16 +108,32 @@ UM.Dialog
             }
         }
 
-
+        Row 
+        {
+            Text 
+            {
+                text: " "
+            }
+        }
 
         Row 
         {
             Text 
             {
+                color: "green"
+                text: "fill these with your current model values:"
+            }
+        }
+
+        Row 
+        {
+            Text 
+            {
+                color: "green"
                 text: "Printing Time: [HH MM]"
             }
             TextField
-            { 
+            {
                 id: printing_time_h_field
                 text: printing_time_h
                 Keys.onReleased:
@@ -139,6 +156,7 @@ UM.Dialog
         {
             Text 
             {
+                color: "green"
                 text: "Material Cost in Euro: "
             }
             TextField 
@@ -148,6 +166,14 @@ UM.Dialog
             }
         }
 
+        Row 
+        {
+			Text
+			{
+				text: " "
+			}
+		}
+
 
         Row 
         {
@@ -156,8 +182,15 @@ UM.Dialog
 				text: "Electrical Cost: " + ( (price_kwh_cent/100) * (power_consumtion_printer_watt/1000) * printing_time_in_hours ).toFixed(2) + " Euro"
 			}
         }
-
         // ( (price_kwh_cent/100) * (power_consumtion_printer_watt/1000) * printing_time_in_hours )
+
+        Row 
+        {
+			Text
+			{
+				text: "Matrial Cost: " + (material_cost_field.text * 1.0).toFixed(2) + " Euro"
+			}
+        }
 
         Row 
         {
@@ -166,18 +199,33 @@ UM.Dialog
 				text: "Printer Cost: " + ( (printer_cost/printer_lasting_hours) * printing_time_in_hours ).toFixed(2) + " Euro"
 			}
 		}
-
         // (printer_cost/printer_lasting_hours) * printing_time_in_hours
+
+        Row 
+        {
+			Text
+			{
+				text: " "
+			}
+		}
 
 
         Row 
         {
 			Text
 			{
-				text: "** TOTAL Cost: " + (1.0*(( (price_kwh_cent/100) * (power_consumtion_printer_watt/1000) * printing_time_in_hours )* 1.0 + ((printer_cost/printer_lasting_hours) * printing_time_in_hours)* 1.0 + (material_cost_field.text * 1.0))).toFixed(2) + " Euro"
+                color: "red"
+				text: "TOTAL Cost: " + (1.0*(( (price_kwh_cent/100) * (power_consumtion_printer_watt/1000) * printing_time_in_hours )* 1.0 + ((printer_cost/printer_lasting_hours) * printing_time_in_hours)* 1.0 + (material_cost_field.text * 1.0))).toFixed(2) + " Euro"
 			}
 		}
 
+        Row 
+        {
+            Text 
+            {
+                text: " "
+            }
+        }
 
 
         Button
