@@ -15,7 +15,7 @@ UM.Dialog
     modality: Qt.NonModal
     id: base;
     width: 480 * Screen.devicePixelRatio;
-    height: 320 * Screen.devicePixelRatio;
+    height: 390 * Screen.devicePixelRatio;
     visible: true;
     title:  qsTr("Calculate electrical print cost")
     property real material_amount_length: manager.materialAmountLength == -1 ? 0 : manager.materialAmountLength
