@@ -33,7 +33,7 @@ UM.Dialog
     property real printing_time_h: manager.printing_time_h
     property real printing_time_m: manager.printing_time_m
     property real printing_time_in_hours: (printing_time_h + (printing_time_m/60))
-    property real material_cost: 0.2
+    property real material_cost: manager.material_cost
    
     Column
     {
@@ -116,39 +116,45 @@ UM.Dialog
             }
         }
 
-        Row 
-        {
-            Text 
-            {
-                color: "green"
-                text: "fill these with your current model values:"
-            }
-        }
+//        Row 
+//        {
+//            Text 
+//            {
+//                color: "green"
+//                text: "fill these with your current model values:"
+//            }
+//        }
 
         Row 
         {
             Text 
             {
                 color: "green"
-                text: "Printing Time: [HH MM]"
+                text: "Printing Time: [HH:MM]"
             }
             TextField
             {
+                width: 36 * Screen.devicePixelRatio
+                readOnly : true
                 id: printing_time_h_field
                 text: printing_time_h
-                Keys.onReleased:
-                {
-                    manager.setPrintingTimeH(printing_time_h_field.text)
-                }
+                maximumLength: 4
             }
             TextField
-            { 
+            {
+                width: 18 * Screen.devicePixelRatio
+                id: printing_time_colon
+                readOnly : true
+                text: ":"
+                maximumLength: 1
+            }
+            TextField
+            {
+                width: 36 * Screen.devicePixelRatio
+                readOnly : true
                 id: printing_time_m_field
                 text: printing_time_m
-                Keys.onReleased:
-                {
-                    manager.setPrintingTimeM(printing_time_m_field.text)
-                }
+                maximumLength: 2
             }
         }
 
@@ -162,7 +168,8 @@ UM.Dialog
             TextField 
             { 
                 id: material_cost_field
-                text: material_cost
+                readOnly : true
+                text: material_cost.toFixed(2)
             }
         }
 
@@ -188,7 +195,7 @@ UM.Dialog
         {
 			Text
 			{
-				text: "Matrial Cost: " + (material_cost_field.text * 1.0).toFixed(2) + " Euro"
+				text: "Material Cost: " + (material_cost_field.text * 1.0).toFixed(2) + " Euro"
 			}
         }
 

@@ -82,16 +82,6 @@ class ElectricPrintCostCalculator(QObject,  Extension):
     def _onActiveMachineChanged(self):
         if self._engine_created:
             self._print_information = Application.getInstance().getPrintInformation()
-            #self._print_information.materialAmountChanged.connect(self.materialAmountChanged)
-            #self._profile = Application.getInstance().getMachineManager().getActiveProfile()
-            #if self._profile:
-            #    material_diameter = self._profile.getSettingValue("material_diameter")
-            #    if material_diameter:
-            #        self._onMaterialDiameterChanged(material_diameter)
-
-    #@pyqtProperty(float, notify = materialAmountChanged)
-    #def materialAmountLength(self):
-    #    return self._print_information.materialAmount
     
     @pyqtProperty(float, notify = materialDiameterChanged)
     def materialDiameter(self):
@@ -119,6 +109,15 @@ class ElectricPrintCostCalculator(QObject,  Extension):
     def printer_cost(self):
         return self._printer_cost
 
+    @pyqtProperty(float)
+    def material_cost(self):
+        materialcost = Application.getInstance().getPrintInformation().materialCosts
+        cost_sum = 0
+        for i in materialcost:
+            cost_sum = (float)(cost_sum) + (float)(i)
+        return (float)(cost_sum)
+
+
     @pyqtProperty(float, notify = PrinterLastingHoursChanged)
     def printer_lasting_hours(self):
         return self._printer_lasting_hours
@@ -126,11 +125,15 @@ class ElectricPrintCostCalculator(QObject,  Extension):
 
     @pyqtProperty(float, notify = PrintingTimeHChanged)
     def printing_time_h(self):
-        return self._printing_time_h
+        # return self._printing_time_h
+        _printtime_ = Application.getInstance().getPrintInformation().currentPrintTime
+        return (_printtime_.hours + (_printtime_.days * 24.0) * 1.0)
 
     @pyqtProperty(float, notify = PrintingTimeMChanged)
     def printing_time_m(self):
-        return self._printing_time_m
+        # return self._printing_time_m
+        _printtime_ = Application.getInstance().getPrintInformation().currentPrintTime
+        return (_printtime_.minutes * 1.0)
 
 
 
@@ -171,17 +174,6 @@ class ElectricPrintCostCalculator(QObject,  Extension):
         self.PrinterLastingHoursChanged.emit()
         Preferences.getInstance().setValue("electric_print_cost_calculator/printer_lasting_hours", printer_lasting_hours);
 
-    @pyqtSlot(float)
-    def setPrintingTimeH(self, printing_time_h):
-        self._printing_time_h = float(printing_time_h)
-        self.PrintingTimeHChanged.emit()
-        Preferences.getInstance().setValue("electric_print_cost_calculator/printing_time_h", printing_time_h);
-
-    @pyqtSlot(float)
-    def setPrintingTimeM(self, printing_time_m):
-        self._printing_time_m = float(printing_time_m)
-        self.PrintingTimeMChanged.emit()
-        Preferences.getInstance().setValue("electric_print_cost_calculator/printing_time_m", printing_time_m);
 
     def _createCostView(self):
         path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("ElectricPrintCostCalculator"), "ElectricPrintCostCalculator.qml"))
