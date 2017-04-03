@@ -34,6 +34,9 @@ UM.Dialog
     property real printing_time_m: manager.printing_time_m
     property real printing_time_in_hours: (printing_time_h + (printing_time_m/60))
     property real material_cost: manager.material_cost
+    property string currency_symbol: manager.currency_symbol
+
+    property string dummy002: manager.updateme
    
     Column
     {
@@ -42,7 +45,7 @@ UM.Dialog
         {
             Text 
             {
-                text: "Price per Kwh in Euro Cent: "
+                text: "Price per Kwh in " + currency_symbol + " Cent: "
             }
             TextField 
             { 
@@ -78,7 +81,7 @@ UM.Dialog
         {
             Text 
             {
-                text: "Printer cost in Euro: "
+                text: "Printer cost in " + currency_symbol + ": "
             }
             TextField 
             { 
@@ -163,7 +166,7 @@ UM.Dialog
             Text 
             {
                 color: "green"
-                text: "Material Cost in Euro: "
+                text: "Material Cost in " + currency_symbol + ": "
             }
             TextField 
             { 
@@ -186,7 +189,7 @@ UM.Dialog
         {
 			Text
 			{
-				text: "Electrical Cost: " + ( (price_kwh_cent/100) * (power_consumtion_printer_watt/1000) * printing_time_in_hours ).toFixed(2) + " Euro"
+				text: "Electrical Cost: " + ( (price_kwh_cent/100) * (power_consumtion_printer_watt/1000) * printing_time_in_hours ).toFixed(2) + " " + currency_symbol
 			}
         }
         // ( (price_kwh_cent/100) * (power_consumtion_printer_watt/1000) * printing_time_in_hours )
@@ -195,7 +198,7 @@ UM.Dialog
         {
 			Text
 			{
-				text: "Material Cost: " + (material_cost_field.text * 1.0).toFixed(2) + " Euro"
+				text: "Material Cost: " + (material_cost_field.text * 1.0).toFixed(2) + " " + currency_symbol
 			}
         }
 
@@ -203,7 +206,7 @@ UM.Dialog
         {
 			Text
 			{
-				text: "Printer Cost: " + ( (printer_cost/printer_lasting_hours) * printing_time_in_hours ).toFixed(2) + " Euro"
+				text: "Printer Cost: " + ( (printer_cost/printer_lasting_hours) * printing_time_in_hours ).toFixed(2) + " " + currency_symbol
 			}
 		}
         // (printer_cost/printer_lasting_hours) * printing_time_in_hours
@@ -222,7 +225,7 @@ UM.Dialog
 			Text
 			{
                 color: "red"
-				text: "TOTAL Cost: " + (1.0*(( (price_kwh_cent/100) * (power_consumtion_printer_watt/1000) * printing_time_in_hours )* 1.0 + ((printer_cost/printer_lasting_hours) * printing_time_in_hours)* 1.0 + (material_cost_field.text * 1.0))).toFixed(2) + " Euro"
+				text: "TOTAL Cost: " + (1.0*(( (price_kwh_cent/100) * (power_consumtion_printer_watt/1000) * printing_time_in_hours )* 1.0 + ((printer_cost/printer_lasting_hours) * printing_time_in_hours)* 1.0 + (material_cost_field.text * 1.0))).toFixed(2) + " " + currency_symbol
 			}
 		}
 

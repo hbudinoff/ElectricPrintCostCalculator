@@ -21,8 +21,8 @@ class ElectricPrintCostCalculator(QObject,  Extension):
     def __init__(self, parent = None):
         super().__init__(parent)
         # Python has a very agressive garbage collector, so we need to keep a reference of the qtcomponent.
-        self._cost_view = None 
-       
+        self._cost_view = None
+
         self.addMenuItem(i18n_catalog.i18n("Calculate"), self.showPopup)
 
         self._engine_created = False
@@ -67,8 +67,8 @@ class ElectricPrintCostCalculator(QObject,  Extension):
     PowerConsumpChanged = pyqtSignal()
     PrinterCostChanged = pyqtSignal()
     PrinterLastingHoursChanged = pyqtSignal()
-    PrintingTimeHChanged = pyqtSignal()
-    PrintingTimeMChanged = pyqtSignal()
+
+    UpdateAllChanged = pyqtSignal()
     
     def _onEngineCreated(self):
         self._engine_created = True
@@ -95,7 +95,9 @@ class ElectricPrintCostCalculator(QObject,  Extension):
     def density(self):
         return self._density
 
-
+    @pyqtProperty(str)
+    def currency_symbol(self):
+        return (str)(Preferences.getInstance().getValue("cura/currency"))
 
     @pyqtProperty(float, notify = PricePKWHChanged)
     def price_kwh_cent(self):
@@ -109,7 +111,11 @@ class ElectricPrintCostCalculator(QObject,  Extension):
     def printer_cost(self):
         return self._printer_cost
 
-    @pyqtProperty(float)
+    @pyqtProperty(float, notify = PrinterLastingHoursChanged)
+    def printer_lasting_hours(self):
+        return self._printer_lasting_hours
+
+    @pyqtProperty(float, notify = UpdateAllChanged)
     def material_cost(self):
         materialcost = Application.getInstance().getPrintInformation().materialCosts
         cost_sum = 0
@@ -117,24 +123,21 @@ class ElectricPrintCostCalculator(QObject,  Extension):
             cost_sum = (float)(cost_sum) + (float)(i)
         return (float)(cost_sum)
 
-
-    @pyqtProperty(float, notify = PrinterLastingHoursChanged)
-    def printer_lasting_hours(self):
-        return self._printer_lasting_hours
-
-
-    @pyqtProperty(float, notify = PrintingTimeHChanged)
+    @pyqtProperty(float, notify = UpdateAllChanged)
     def printing_time_h(self):
-        # return self._printing_time_h
         _printtime_ = Application.getInstance().getPrintInformation().currentPrintTime
         return (_printtime_.hours + (_printtime_.days * 24.0) * 1.0)
 
-    @pyqtProperty(float, notify = PrintingTimeMChanged)
+    @pyqtProperty(float, notify = UpdateAllChanged)
     def printing_time_m(self):
-        # return self._printing_time_m
         _printtime_ = Application.getInstance().getPrintInformation().currentPrintTime
         return (_printtime_.minutes * 1.0)
 
+    @pyqtProperty(str)
+    def updateme(self):
+        # dummy to update all values on start?
+        self.UpdateAllChanged.emit()
+        return (str)(" XXX ")
 
 
     
