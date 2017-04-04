@@ -238,14 +238,27 @@ UM.Dialog
         }
 
 
-        Button
+        Row 
         {
-            
-            text: qsTr("Cancel");
-            onClicked: 
-            {
-                base.visible = false;
-            }
+			Button
+			{
+				
+				text: qsTr("Update");
+				onClicked: 
+				{
+					manager.updateme()
+				}
+			}
+
+			Button
+			{
+				
+				text: qsTr("Close");
+				onClicked: 
+				{
+					base.visible = false;
+				}
+			}
         }
     }
 }
