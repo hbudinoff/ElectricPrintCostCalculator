@@ -1,0 +1,8 @@
+{
+    "name": "Electric PrintCostCalculator",
+    "author": "Zoff",
+    "version": "1.0.0",
+    "description": "Electric PrintCostCalculator",
+    "api": 4,
+    "i18n-catalog": "ElectricPrintCostCalculator"
+}
