@@ -17,7 +17,7 @@ from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("ElectricPrintCostCalculator")
 
 
-class ElectricPrintCostCalculator(QObject,  Extension):
+class ElectricPrintCostCalculator(Extension):
     def __init__(self, parent = None):
         super().__init__(parent)
         # Python has a very agressive garbage collector, so we need to keep a reference of the qtcomponent.
