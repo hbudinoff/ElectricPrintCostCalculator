@@ -3,6 +3,7 @@
     "author": "Zoff",
     "version": "1.0.0",
     "description": "Electric PrintCostCalculator",
-    "api": 4,
-    "i18n-catalog": "ElectricPrintCostCalculator"
+    "api": 6,
+    "supported_sdk_versions": ["6.0.0", "7.0.0"],
+    "catalog": "uranium"
 }
